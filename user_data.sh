@@ -57,19 +57,5 @@ chmod 755 /home/${ssh_user}/update_ssh_authorized_keys.sh
 # Execute now
 su ${ssh_user} -c /home/${ssh_user}/update_ssh_authorized_keys.sh
 
-# Be backwards compatible with old cron update enabler
-if [ "${enable_hourly_cron_updates}" = 'true' -a -z "${keys_update_frequency}" ]; then
-  keys_update_frequency="0 * * * *"
-else
-  keys_update_frequency="${keys_update_frequency}"
-fi
-
-# Add to cron
-if [ -n "$keys_update_frequency" ]; then
-  croncmd="/home/${ssh_user}/update_ssh_authorized_keys.sh >/dev/null 2>&1"
-  cronjob="$keys_update_frequency $croncmd"
-  ( crontab -u ${ssh_user} -l | grep -v "$croncmd" ; echo "$cronjob" ) | crontab -u ${ssh_user} -
-fi
-
 # Append addition user-data script
 ${additional_user_data_script}
