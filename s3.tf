@@ -1,10 +1,5 @@
-locals {
-  s3_bucket_name = "${format("%s.%s", var.s3_bucket_name, var.s3_bucket_namespace)}"
-}
-
-resource "aws_s3_bucket" "this" {
-  bucket = "${local.s3_bucket_name}"
-  region = "${var.bucket_region}"
+resource "aws_s3_bucket" "bastion" {
+  bucket = "${local.s3_full_bucket_name}"
   acl    = "${var.acl}"
 
   versioning {
@@ -12,12 +7,12 @@ resource "aws_s3_bucket" "this" {
   }
 }
 
-resource "aws_s3_bucket_object" "this" {
-  count = "${length(var.objects)}"
+resource "aws_s3_bucket_object" "bastion" {
+  count = "${length(var.keys_to_prime)}"
 
-  bucket  = "${aws_s3_bucket.mod.id}"
-  key     = "${element(var.objects, count.index)}"
-  content = "${file("${path.cwd}/objects/${element(var.objects, count.index)}")}"
+  bucket  = "${aws_s3_bucket.bastion.id}"
+  key     = "${element(var.keys_to_prime, count.index)}"
+  content = "${file("${path.module}/keys/${element(var.keys_to_prime, count.index)}")}"
 
-  depends_on = ["aws_s3_bucket.this"]
+  depends_on = ["aws_s3_bucket.bastion"]
 }
