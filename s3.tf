@@ -12,7 +12,7 @@ resource "aws_s3_bucket_object" "bastion" {
 
   bucket  = "${aws_s3_bucket.bastion.id}"
   key     = "${element(var.keys_to_prime, count.index)}"
-  content = "${file("${path.module}/keys/${element(var.keys_to_prime, count.index)}")}"
+  content = "${file("${path.cwd}/keys/${element(var.keys_to_prime, count.index)}")}"
 
   depends_on = ["aws_s3_bucket.bastion"]
 }
