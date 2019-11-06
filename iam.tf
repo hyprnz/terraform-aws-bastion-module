@@ -37,13 +37,13 @@ data "aws_iam_policy_document" "assume_from_ec2" {
 }
 
 resource "aws_iam_policy" "bastion_reader" {
-  name        = "BastionKeysReadAccess"
+  name        = "BastionKeysReadAccess-${var.name}"
   policy      = "${data.aws_iam_policy_document.s3_bastion.json}"
   description = "Grants permissions to read keys in bastion keys bucket"
 }
 
 resource "aws_iam_role" "bastion_role" {
-  name               = "BastionInstanceRole"
+  name               = "BastionInstanceRole-${var.name}"
   assume_role_policy = "${data.aws_iam_policy_document.assume_from_ec2.json}"
 }
 
@@ -53,6 +53,6 @@ resource "aws_iam_role_policy_attachment" "role_policy" {
 }
 
 resource "aws_iam_instance_profile" "default" {
-  name = "BastionInstanceProfile"
+  name = "BastionInstanceProfile-${var.name}"
   role = "${aws_iam_role.bastion_role.name}"
 }

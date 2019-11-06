@@ -91,6 +91,8 @@ resource "aws_autoscaling_group" "bastion" {
     concat(
       list(map("key", "Owner", "value", "Bastion", "propagate_at_launch", true)
       ),
+      list(map("key", "Name", "value", "${var.name}", "propagate_at_launch", true)
+      ),
       var.asg_tags
     )
   }"]
