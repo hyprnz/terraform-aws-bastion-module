@@ -45,7 +45,7 @@ variable "additional_user_data_script" {
 
 variable "ingress_source_cidrs" {
   description = "A list of source cidr ranges to allow connection to the bastion"
-  type        = "list"
+  type        = list(string)
   default     = ["0.0.0.0/0"]
 }
 
@@ -55,24 +55,24 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "A list of subnet ids for bastion resources"
-  type        = "list"
+  type        = list(string)
 }
 
 variable "keys_to_prime" {
   description = "A list of public key files to upload. Must be in the keys directory"
-  type        = "list"
+  type        = list(string)
   default     = []
 }
 
 variable "asg_tags" {
   description = "Specific tags to add to the ASG - Should include `propagate = true` key"
-  type        = "list"
+  type        = list(map(string))
   default     = []
 }
 
 variable "tags" {
   description = "Tags to add to all bastion resources - except the ASG"
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
 
