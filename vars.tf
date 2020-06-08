@@ -40,7 +40,7 @@ variable "keys_update_frequency" {
 }
 
 variable "additional_user_data_script" {
-  default = "data"
+  default = ""
 }
 
 variable "ingress_source_cidrs" {
